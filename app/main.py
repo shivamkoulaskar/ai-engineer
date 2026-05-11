@@ -3,6 +3,8 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
+@app.get("/")
 class User(BaseModel):
     item:str 
     price:int 

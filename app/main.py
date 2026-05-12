@@ -1,28 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
 
 
-@app.get("/")
 class User(BaseModel):
-    item:str 
-    price:int 
-    quantity:int 
+    username:str 
+    age:int 
 
-@app.post("/order")
-def order(user:User):
-    if(user.price>0 and user.quantity>0):
+@app.post("/user")
+def validation(user:User):
+    if(len(user.username)>3 and user.age>18):
         return{
-            "status":200,
-            "message":"Order placed",
-            "total":user.price*user.quantity
+            "status":201,
+            "message":"Login Successful"
         }
     else:
-        return{
-            "status":401,
-            "Message":"Price and quantity is must be greater than 0"
-        }
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid credentials"
+        )
+
 
 
 
